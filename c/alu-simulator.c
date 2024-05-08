@@ -9,21 +9,22 @@ typedef union {
     } parts;
 } Float_t;
 
+// TODO: it should receive a float instead of int
 Float_t parseFloat(int num) {
     Float_t fnum;
     fnum.parts.sign = (num < 0) ? 1 : 0;
-    num = (num < 0) ? -num : num;
+    num = (num < 0) ? -num : num; // negative number to absolute value
 
     int mostSignificantBit = 0;
     for (int i = 31; i >= 0; i--) {
-        if ((num >> i) & 1) {
+        if ((num >> i) & 1) { // getting the most significant bit '0010010' in this case, the bit position would be 5
             mostSignificantBit = i;
             break;
         }
     }
 
-    fnum.parts.exponent = mostSignificantBit + 127;
-    fnum.parts.mantissa = (num << (23 - mostSignificantBit)) & 0x7FFFFF;
+    fnum.parts.exponent = mostSignificantBit + 127; // bias to represent -126 to 127 in binary mode.
+    fnum.parts.mantissa = (num << (23 - mostSignificantBit)) & 0x7FFFFF; // shift to the left due to the most significant bit and apply a mask to ensure that we keep the less significant 23 bits 
     return fnum;
 }
 
