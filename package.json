@@ -1,0 +1,13 @@
+{
+  "name": "c",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "gcc -o alu-simulator alu-simulator.c",
+    "start": "npm run build && ./alu-simulator"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
