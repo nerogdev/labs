@@ -4,6 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "build:o": "gcc -o alu-simulator-original alu-simulator-original.c",
+    "start:o": "npm run build && ./alu-simulator-original",
     "build": "gcc -o alu-simulator alu-simulator.c",
     "start": "npm run build && ./alu-simulator"
   },
