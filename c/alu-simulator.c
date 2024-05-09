@@ -37,9 +37,19 @@ void printFloat(Float_t *fnum) {
     printf("{\n");
     printf("  \"number\": %f,\n", fnum->f);
     printf("  \"sign\": %d,\n", fnum->parts.sign);
-    printf("  \"exponent\": %d,\n", fnum->parts.exponent);
-    printf("  \"mantissa\": %d\n", fnum->parts.mantissa);
-    printf("}\n");
+    
+    printf("  \"exponent\": ");
+    for (int i = 8; i >= 0; i--)
+    {
+        printf("%d", fnum->parts.exponent >> i & 1);
+    }
+    
+    printf(",\n  \"mantissa\": ");
+    for (int i = 23; i >= 0; i--)
+    {
+        printf("%d", fnum->parts.mantissa >> i & 1);
+    }
+    printf("\n}\n");
 }
 
 int main(int argc, char *argv[]) {
