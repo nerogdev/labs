@@ -3,7 +3,7 @@ Learning C fundamentals.
 This program implements basic aritmetic and logical operations, taking into account a `struct` data named *Float_t*
 This new data type stores as integers the parts of a binary representation of a float number.
 
-# Aritmetic ops
+# Arithmetic ops
 - Add Float_t
 - Substract Float_t
 - Multiply Float_t
