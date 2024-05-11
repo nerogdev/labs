@@ -3,10 +3,9 @@
   "version": "0.1.0",
   "description": "",
   "scripts": {
-    "build:o": "gcc -o alu-simulator-original alu-simulator-original.c",
-    "start:o": "npm run build && ./alu-simulator-original",
     "build": "gcc -o dist/alu-simulator alu-simulator.c",
-    "start": "npm run build && dist/alu-simulator"
+    "start": "npm run build && dist/alu-simulator",
+    "start:d": "npm run build && MODE=DEBUG dist/alu-simulator"
   },
   "keywords": [],
   "author": "",
