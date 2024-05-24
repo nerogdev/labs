@@ -57,7 +57,7 @@ gcc -o dist/alu-simulator alu-simulator.c
 MODE=DEBUG dist/alu-simulator add
 ```
 
-## Milestones
+## Milestones🎯
 With this C project I also pretend to learn the C environment development, like:
 - ✅C syntax
 - Dependencies: own and third part libs. 
