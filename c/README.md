@@ -11,18 +11,18 @@ For this purpose I try to apply some good practices about coding, like:
 
 Of course everything can be improved 🚀.
 
-# Arithmetic ops
+## Arithmetic ops
 - ✅Add Float_t
 - Substract Float_t
 - Multiply Float_t
 - Divide Float_t
 
-# Logical ops
+## Logical ops
 - AND Float_t
 - OR Float_t
 - NOT Float_t
 
-# Optional requirements🛠️
+## Optional requirements🛠️
 To make easy the development I'm using `npm -v 8.3.1` of nodejs.<br>
 You can execute in the current directory the following command to compile and execute the program result:
 
@@ -46,6 +46,8 @@ dist/alu-simulator add
 ```
 
 ### Manual DEBUGGING🧰
+This configuration will print every `Float_t` that is created by `parseFloat`. 
+
 ```sh
 npm run start:d add
 ```
@@ -55,3 +57,11 @@ gcc -o dist/alu-simulator alu-simulator.c
 MODE=DEBUG dist/alu-simulator add
 ```
 
+## Milestones
+With this C project I also pretend to learn the C environment development, like:
+- C syntax
+- Dependencies: own and third part libs. 
+- Delivery: *Makefile* and `make`.
+- Unit testing: for instance `Cunit`.
+
+* This list can grow. 
