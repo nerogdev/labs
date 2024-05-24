@@ -133,6 +133,11 @@ Float_t add(Float_t op1, Float_t op2) {
     return result;
 }
 
+Float_t subtract(float op1, float op2) {
+  op2 = -op2;
+  return add(op1, op2);
+} 
+
 char *readInputInteractive() {
         static char input[8];
         printf("Commands:\n- %s: %s\n- %s: %s\n- %s: %s\n- %s: %s\n- %s\n\nType a command: ", ADD_DSC, ADD, SUBTRACT_DSC, SUBTRACT, MULTIPLY_DSC, MULTIPLY, DIVIDE_DSC, DIVIDE, EXIT);
@@ -183,10 +188,16 @@ int main(int argc, char *argv[]) {
         exitIfCmd(cmd);
         cmdok = cmdExist(cmd);
     } while (!cmdok);
-    if(!isAdd(cmd)) return 0;
-   
-    float op1 = readNumberInteractive("Operand 1: ");
+
+float op1 = readNumberInteractive("Operand 1: ");
     float op2 = readNumberInteractive("Operand 2: ");
+
+    if(isAdd(cmd) {
+
+} 
+if (isSubtract(cmd)) {
+} 
+   
     Float_t result = add(parseFloat(op1), parseFloat(op2));
     printf("Result:\n");
     printFloat(&result);
