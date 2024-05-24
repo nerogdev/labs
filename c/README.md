@@ -59,9 +59,8 @@ MODE=DEBUG dist/alu-simulator add
 
 ## Milestones
 With this C project I also pretend to learn the C environment development, like:
-- C syntax
+- ✅C syntax
 - Dependencies: own and third part libs. 
 - Delivery: *Makefile* and `make`.
 - Unit testing: for instance `Cunit`.
-
-* This list can grow. 
+ This list can grow. 
