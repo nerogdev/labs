@@ -133,16 +133,16 @@ Float_t add(Float_t op1, Float_t op2) {
     return result;
 }
 
-Float_t subtract(float op1, float op2) {
-  op2 = -op2;
-  return add(op1, op2);
-} 
+Float_t subtract(Float_t op1, Float_t op2) {
+    op2.parts.sign ^= 1;
+    return add(op1, op2);
+}
 
 char *readInputInteractive() {
-        static char input[8];
-        printf("Commands:\n- %s: %s\n- %s: %s\n- %s: %s\n- %s: %s\n- %s\n\nType a command: ", ADD_DSC, ADD, SUBTRACT_DSC, SUBTRACT, MULTIPLY_DSC, MULTIPLY, DIVIDE_DSC, DIVIDE, EXIT);
-        scanf("%8s", input);
-        return input;
+    static char input[8];
+    printf("Commands:\n- %s: %s\n- %s: %s\n- %s: %s\n- %s: %s\n- %s\n\nType a command: ", ADD_DSC, ADD, SUBTRACT_DSC, SUBTRACT, MULTIPLY_DSC, MULTIPLY, DIVIDE_DSC, DIVIDE, EXIT);
+    scanf("%8s", input);
+    return input;
 }
 
 float readNumberInteractive(char *msg) {
@@ -179,6 +179,10 @@ bool isAdd(char *cmd) {
     return strcmp(cmd, ADD) == 0;
 }
 
+bool isSubtract(char *cmd) {
+    return strcmp(cmd, SUBTRACT) == 0;
+}
+
 int main(int argc, char *argv[]) {
     char *cmd;
     bool cmdok = true;
@@ -189,16 +193,15 @@ int main(int argc, char *argv[]) {
         cmdok = cmdExist(cmd);
     } while (!cmdok);
 
-float op1 = readNumberInteractive("Operand 1: ");
+    float op1 = readNumberInteractive("Operand 1: ");
     float op2 = readNumberInteractive("Operand 2: ");
+    Float_t result;
 
-    if(isAdd(cmd) {
+    if(isAdd(cmd))
+        result = add(parseFloat(op1), parseFloat(op2));
+    if (isSubtract(cmd))
+        result = subtract(parseFloat(op1), parseFloat(op2));
 
-} 
-if (isSubtract(cmd)) {
-} 
-   
-    Float_t result = add(parseFloat(op1), parseFloat(op2));
     printf("Result:\n");
     printFloat(&result);
     return 0;
