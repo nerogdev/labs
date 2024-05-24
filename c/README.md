@@ -13,7 +13,7 @@ Of course everything can be improved 🚀.
 
 ## Arithmetic ops
 - ✅Add Float_t
-- Substract Float_t
+- ✅Substract Float_t
 - Multiply Float_t
 - Divide Float_t
 
@@ -63,5 +63,6 @@ With this C project I also pretend to learn the C environment development, like:
 - Dependencies: own and third part libs. 
 - Delivery: *Makefile* and `make`.
 - Unit testing: for instance `Cunit`.
+- Expression evaluator: `1 + ( 2 + 3 ) * 3`
 
  This list can grow. 
