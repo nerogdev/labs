@@ -4,23 +4,25 @@
 #include <string.h>
 #include <unistd.h>
 
-#define COMMANDS_SIZE 5
+#define COMMANDS_SIZE 3
+#define EXIT_IDX 2
+#define EXIT "x"
+#define EXIT_DSC "exit"
 #define ADD "add"
 #define ADD_DSC "Add"
 #define SUBTRACT "sub"
 #define SUBTRACT_DSC "Subtract"
-#define MULTIPLY "mul"
-#define MULTIPLY_DSC "Multiply"
-#define DIVIDE "div"
-#define DIVIDE_DSC "Divide"
-#define EXIT "exit"
 
 const int FLOAT_BITS = 32;
 const int MANTISSA_BITS = 23;
 const int EXPONENT_BITS = 8;
 const int NON_MANTISSA_BITS = FLOAT_BITS - MANTISSA_BITS;
 
-const char *COMMANDS[COMMANDS_SIZE] = {ADD, SUBTRACT, MULTIPLY, DIVIDE, EXIT};
+typedef struct {
+    char code[4];
+    char dsc[9];
+} Command_t;
+
 typedef union {
     float f;
     struct {
@@ -29,6 +31,15 @@ typedef union {
         unsigned int sign: 1;
     } parts;
 } Float_t;
+
+/**
+ * The order is important to check every command individually
+*/
+const Command_t COMMANDS[COMMANDS_SIZE] = {
+    {ADD, ADD_DSC},
+    {SUBTRACT, SUBTRACT_DSC},
+    {EXIT, EXIT_DSC},
+};
 
 const unsigned int SIGN_MASK = 0x80000000;
 const unsigned int MANTISSA_MASK = 0x007FFFFF;
@@ -133,11 +144,21 @@ Float_t add(Float_t op1, Float_t op2) {
     return result;
 }
 
+Float_t subtract(Float_t op1, Float_t op2) {
+    op2.parts.sign ^= 1;
+    return add(op1, op2);
+}
+
 char *readInputInteractive() {
-        static char input[8];
-        printf("Commands:\n- %s: %s\n- %s: %s\n- %s: %s\n- %s: %s\n- %s\n\nType a command: ", ADD_DSC, ADD, SUBTRACT_DSC, SUBTRACT, MULTIPLY_DSC, MULTIPLY, DIVIDE_DSC, DIVIDE, EXIT);
-        scanf("%8s", input);
-        return input;
+    static char input[8];
+    
+    printf("Commands:\n");
+    for (int i = 0; i < COMMANDS_SIZE; i++)
+        printf("- %s: %s\n", COMMANDS[i].dsc, COMMANDS[i].code);
+    printf("\n\nType a command: ");
+    
+    scanf("%8s", input);
+    return input;
 }
 
 float readNumberInteractive(char *msg) {
@@ -149,8 +170,25 @@ float readNumberInteractive(char *msg) {
     errorHandler("needed a float");
 }
 
+bool isEquivalent(char *value, Command_t cmd) {
+    return strcasecmp(value, cmd.code) == 0 || strcasecmp(value, cmd.dsc) == 0;
+}
+
+bool isExit(char *value) {
+    return isEquivalent(value, COMMANDS[EXIT_IDX]);
+}
+
+bool isAdd(char *value) {
+    return isEquivalent(value, COMMANDS[0]);
+}
+
+bool isSubtract(char *value) {
+    return isEquivalent(value, COMMANDS[1]);
+}
+
+
 void exitIfCmd(char *cmd) {
-    if (strcmp(cmd,EXIT) != 0) return;
+    if (!isExit(cmd)) return;
     printf("\n");
     sleep(1);
     printf("Bye then...\n");
@@ -159,7 +197,7 @@ void exitIfCmd(char *cmd) {
 
 bool cmdExist(char *cmd) {
     for (int i = 0; i < COMMANDS_SIZE; i++) {
-        if (strcmp(cmd, COMMANDS[i]) == 0)
+        if (isEquivalent(cmd, COMMANDS[i]))
             return true;
     }
     return false;
@@ -168,10 +206,6 @@ bool cmdExist(char *cmd) {
 char *readCommand(int cmdSize, char *cmds[]) {
     if (cmdSize >= 2) return cmds[1];
     return readInputInteractive();
-}
-
-bool isAdd(char *cmd) {
-    return strcmp(cmd, ADD) == 0;
 }
 
 int main(int argc, char *argv[]) {
@@ -183,11 +217,16 @@ int main(int argc, char *argv[]) {
         exitIfCmd(cmd);
         cmdok = cmdExist(cmd);
     } while (!cmdok);
-    if(!isAdd(cmd)) return 0;
-   
+
     float op1 = readNumberInteractive("Operand 1: ");
     float op2 = readNumberInteractive("Operand 2: ");
-    Float_t result = add(parseFloat(op1), parseFloat(op2));
+    Float_t result;
+
+    if(isAdd(cmd))
+        result = add(parseFloat(op1), parseFloat(op2));
+    if (isSubtract(cmd))
+        result = subtract(parseFloat(op1), parseFloat(op2));
+
     printf("Result:\n");
     printFloat(&result);
     return 0;
