@@ -3,9 +3,10 @@
   "version": "0.1.0",
   "description": "",
   "scripts": {
-    "build": "gcc -o dist/alu-simulator alu-simulator.c",
-    "start": "npm run build && dist/alu-simulator",
-    "start:d": "npm run build && MODE=DEBUG dist/alu-simulator"
+    "clean": "rm -rf dist && mkdir dist",
+    "build": "npm run clean && gcc -c alu.c -o dist/alu.o && gcc cli.c dist/alu.o -o dist/cli",
+    "start": "npm run build && dist/cli",
+    "start:d": "npm run build && MODE=DEBUG dist/cli"
   },
   "keywords": [],
   "author": "",
