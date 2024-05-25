@@ -29,7 +29,7 @@ You can execute in the current directory the following command to compile and ex
 ```sh
 npm start
 ```
-You can find the program result in `dist/alu-simulator`
+You can find the program result in `dist/cli`
 
 ## Instructions📌
 The main program can accept for now a single input as a command option like the current single implementation 'add',<br>
@@ -41,8 +41,10 @@ npm start add
 ```
 or manually
 ```sh
-gcc -o dist/alu-simulator alu-simulator.c
-dist/alu-simulator add
+rm -rf dist && mkdir dist
+gcc -c alu.c -o dist/alu.o
+gcc cli.c dist/alu.o -o dist/cli
+dist/cli
 ```
 
 ### Manual DEBUGGING🧰
@@ -53,8 +55,10 @@ npm run start:d add
 ```
 or manually (bash)
 ```sh
-gcc -o dist/alu-simulator alu-simulator.c
-MODE=DEBUG dist/alu-simulator add
+rm -rf dist && mkdir dist
+gcc -c alu.c -o dist/alu.o
+gcc cli.c dist/alu.o -o dist/cli
+MODE=DEBUG dist/cli
 ```
 
 ## Milestones🎯
