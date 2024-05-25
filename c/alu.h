@@ -11,7 +11,7 @@ typedef union {
     } parts;
 } Float_t;
 
-void printFloat(const Float_t *num);
+char *formatFloatAsString(const Float_t *num);
 Float_t parseFloat(float num);
 Float_t add(Float_t op1, Float_t op2);
 Float_t subtract(Float_t op1, Float_t op2);

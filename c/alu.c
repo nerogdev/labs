@@ -13,33 +13,82 @@ const unsigned int SIGN_MASK = 0x80000000;
 const unsigned int MANTISSA_MASK = 0x007FFFFF;
 const unsigned int EXPONENT_MASK = 0x7F800000;
 
+void errorAluHandler(char *error) {
+    printf("Error: %s\n", error);
+    exit(1);
+}
+
+void errorAluMemory() {
+    errorAluHandler("Assign Alu memory.");
+}
+
 bool debugMode() {
     char *mode = getenv("MODE");
     return mode && strcmp(mode, "DEBUG") == 0;
 }
 
-void printBits(const int num, const int mask) {
-    for (int i = mask - 1; i >= 0; i--)
-        printf("%d", num >> i & 1);
-}
+/**
+ * free memory required
+*/
+char *formatTobits(int num, const int mask) {
+    char *result = (char *)malloc((mask + 1) * sizeof(char));
+    if (result == NULL) errorAluMemory();
 
-void printFloat(const Float_t *fnum) {
-    if(fnum == NULL) {
-        printf("{}\n");   
-        return;
+    // null terminator
+    result[mask] = '\0';
+
+    for (int i = mask - 1; i >= 0; i--) {
+        result[i] = (num & 1) ? '1' : '0';
+        num >>= 1;
     }
 
-    printf("{\n");
-    printf("  \"number\": %f,\n", fnum->f);
-    printf("  \"sign\": %d,\n", fnum->parts.sign);
-    
-    printf("  \"exponent\": ");
-    printBits(fnum->parts.exponent, EXPONENT_BITS);
-    
-    printf("\n  \"mantissa\": ");
-    printBits(fnum->parts.mantissa, MANTISSA_BITS);
+    return result;
+}
 
-    printf("\n}\n");
+/**
+ * free memory required
+*/
+char *formatToExponent(int num) {
+    return formatTobits(num, EXPONENT_BITS);
+}
+
+/**
+ * free memory required
+*/
+char *formatToMantissa(int num) {
+    return formatTobits(num, MANTISSA_BITS);
+}
+
+/**
+ * free memory required
+*/
+char *formatFloatAsString(const Float_t *num) {
+    size_t len;
+    char *exp;
+    char *man;
+    if (num == NULL) len = 2;
+    else {
+        exp = formatToExponent(num->parts.exponent);
+        man = formatToMantissa(num->parts.mantissa);
+        len = snprintf(NULL, 0, "{\n  \"number\": %f,\n  \"sign\": %d,\n  \"exponent\": %s,\n  \"mantissa\": %s\n}", num->f, num->parts.sign, exp, man);
+    }
+    
+    char *result = (char*)malloc(len + 1);
+    if (result == NULL) errorAluMemory();
+
+    if (num == NULL) snprintf(result, len, "{}");
+    else {
+        snprintf(result, len, "{\n  \"number\": %f,\n  \"sign\": %d,\n  \"exponent\": %s,\n  \"mantissa\": %s\n}", num->f, num->parts.sign, exp, man);
+        free(exp);
+        free(man);
+    }
+    return result;
+}
+
+void printFloat(const Float_t *num) {
+    char *floatstr = formatFloatAsString(num);
+    printf("%s\n", floatstr);
+    free(floatstr);
 }
 
 Float_t parseFloat(float num) {
@@ -49,7 +98,7 @@ Float_t parseFloat(float num) {
     fnum.parts.exponent = (*ptr & EXPONENT_MASK) >> MANTISSA_BITS;
     fnum.parts.mantissa = ((*ptr << NON_MANTISSA_BITS) >> NON_MANTISSA_BITS) & MANTISSA_MASK;
 
-    if(debugMode()) printFloat(&fnum);
+    if (debugMode()) printFloat(&fnum);
 
     return fnum;
 }

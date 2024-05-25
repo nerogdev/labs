@@ -111,6 +111,9 @@ int main(int argc, char *argv[]) {
         result = subtract(parseFloat(op1), parseFloat(op2));
 
     printf("Result:\n");
-    printFloat(&result);
+    char *floatstr = formatFloatAsString(&result); 
+    printf("%s\n", floatstr);
+    free(floatstr);
+  
     return 0;
 }
