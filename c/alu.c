@@ -114,6 +114,9 @@ Float_t add(Float_t op1, Float_t op2) {
     unsigned int mantissa2_tmp = op2.parts.mantissa | 0x00800000;
 
     // Normalize
+    // TODO: check exponent masks: exmaple 6
+    // exponent: 10000001
+    // how to get the exponent result? 6 and 3
     if (op1.parts.exponent < op2.parts.exponent) {
         mantissa1_tmp >>= op2.parts.exponent - op1.parts.exponent;
         op1.parts.exponent = op2.parts.exponent;
@@ -129,9 +132,11 @@ Float_t add(Float_t op1, Float_t op2) {
         mantissa = mantissa1_tmp + mantissa2_tmp;
         sign = op1.parts.sign;
         // shift to the right til least significant bit
+        // BUGFIX: "dbe dejar passar cuando las mantisas exponentes son igules y el bit mas importatnte es igual 1"
         while (mantissa && (mantissa & 0x00800000) == 0) {
-            mantissa >>= 1;
+            printf("entrooooooooooooooooooooooooooooooooooooo");
             exponent++;
+            mantissa >>= 1;
         }
     } else { 
         if (mantissa1_tmp >= mantissa2_tmp) {
